@@ -1,0 +1,11 @@
+{
+    "files.associations": {
+        "*.tpp": "cpp",
+        "chrono": "cpp",
+        "thread": "cpp",
+        "functional": "cpp",
+        "*.rh": "cpp"
+    },
+    "terminal.integrated.shell.windows": "cmd.exe",
+    
+}
