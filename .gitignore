@@ -6,7 +6,7 @@
 *.lo
 *.o
 *.obj
-#*.pdb
+*.pdb
 
 # Precompiled Headers
 *.gch
@@ -33,4 +33,4 @@
 *.app
 
 # Folders
-#*/bin
+*/bin
