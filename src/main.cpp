@@ -37,7 +37,9 @@ bool MainObject::OnGameUpdate(float elapsedTime)
 void MainObject::OnGameRender(Renderer* renderer)
 {
     Indexer index(16,16,1,1);
-    renderer->RenderCopy(tempAsset,index.GetRectAtIndex(1,1),{16,16,16,16});
+
+    renderer->RenderCopy(tempAsset,index.GetRectAtIndex(1,3),{16,16,64,64});
+    renderer->RenderCopy(tempAsset,index.GetRectAtIndex(7,3),{16,16,64,64});
 }
 
 void MainObject::OnGameInput(const SDL_Event& event)
