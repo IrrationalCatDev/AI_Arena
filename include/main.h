@@ -1,26 +1,23 @@
-#include <SDL.h>
-#include <SDL_assert.h>
-#include "ScopeGuard.h"
-#include "renderer.h"
+#pragma once
 
-class MainObject
+#include "../SDL2_Game_Framework/GameBase.h"
+
+class MainObject : public GameBase
 {
 public:
-    MainObject();
-    ~MainObject();
-
-    bool InitializeProcesses();
-
-    void ProcessInput();
-    bool Update(float elapsedTime);
-    void Render();
+    MainObject() = default;
+    ~MainObject() = default;
+ 
 private:
-    Renderer renderer;
-    
-    SDL_Window* m_pWindow;
-    SDL_Renderer* m_pRenderer;
-    SDL_Event event;
+    bool OnInitialize() override;
+    bool OnGameUpdate(float elapsedTime) override;
+    void OnGameRender(Renderer* renderer) override;
+    void OnGameInput(const SDL_Event& event) override;
+    void OnExitRequested() override;
 
+    AssetHandle tempAsset;
+
+    
 };
 
 

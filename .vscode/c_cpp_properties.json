@@ -3,6 +3,8 @@
         {
             "name": "Win32",
             "includePath": [
+                "${workspaceFolder}/entt/**",
+                "${workspaceFolder}/SDL2_Game_Framework/**",
                 "${workspaceFolder}/src/**",
                 "${workspaceFolder}/include/**",
                 "C:/SDL2-2.0.10/include/**"
