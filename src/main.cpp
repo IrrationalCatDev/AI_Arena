@@ -19,7 +19,6 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 {
     MainObject game;
     game.StartGame();
-
 }
 
 bool MainObject::OnInitialize()
@@ -40,6 +39,8 @@ void MainObject::OnGameRender(Renderer* renderer)
 
     renderer->RenderCopy(tempAsset,index.GetRectAtIndex(1,3),{16,16,64,64});
     renderer->RenderCopy(tempAsset,index.GetRectAtIndex(7,3),{16,16,64,64});
+
+    renderer->RenderRect({64,16,60,80},{0xFF,0,0,0xFF});
 }
 
 void MainObject::OnGameInput(const SDL_Event& event)

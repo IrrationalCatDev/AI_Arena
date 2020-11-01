@@ -16,7 +16,7 @@ Renderer::~Renderer()
 void Renderer::Cleanup()
 {
     //clean up our SDL stuff
-    for (auto& asset : m_Surfaces)
+    for (auto& asset : m_Textures)
     {
         SDL_DestroyTexture(asset.second);
     }
@@ -27,7 +27,7 @@ void Renderer::Cleanup()
 
 void Renderer::UnloadAsset(AssetHandle handle)
 {
-    auto& asset = m_Surfaces[handle];
+    auto& asset = m_Textures[handle];
     SDL_DestroyTexture(asset);
     asset = nullptr;
 }
@@ -64,6 +64,15 @@ bool Renderer::Initialize()
 
 AssetHandle Renderer::LoadAsset(std::string fileName)
 {
+    //first check to see if the asset has already been loaded
+    auto iTextureIter = m_LoadedTextures.find(fileName);
+    if (iTextureIter != m_LoadedTextures.end())
+    {
+        //texture has already been loaded return the handle
+        //and now we probably need to track how many things have
+        //tried to load this asset.
+        return iTextureIter->second;
+    }
     //-1 means asset failed to load
     AssetHandle newAssetHandle = -1;
     SDL_Surface* pNewSurface = IMG_Load(fileName.c_str());
@@ -77,7 +86,7 @@ AssetHandle Renderer::LoadAsset(std::string fileName)
         //eventually maybe have some way of auto atlasing these textures
         //and the handle will indicate where in the atlas they are
         newAssetHandle = m_NextHandle++;
-        m_Surfaces.insert(std::make_pair(newAssetHandle,pNewTexture));
+        m_Textures.insert(std::make_pair(newAssetHandle,pNewTexture));
         //no longer need the surface now that we have the texture
         SDL_FreeSurface(pNewSurface);
     }
@@ -95,7 +104,41 @@ void Renderer::Present()
     SDL_RenderPresent(m_pRenderer);
 }
 
+void Renderer::PushViewport(Rect viewport)
+{
+    SDL_RenderSetViewport(m_pRenderer, &viewport);
+    m_Viewports.push(viewport);
+}
+
+void Renderer::PopViewport()
+{
+    SDL_assert(m_Viewports.size() > 0);
+    m_Viewports.pop();
+    // this might be the topmost viewport
+    // in which case don't set anything as
+    // we are likely done drawing for this frame
+    if (m_Viewports.size() > 0)
+    {
+        SDL_RenderSetViewport(m_pRenderer, &m_Viewports.top());
+    }
+}
+
 void Renderer::RenderCopy(AssetHandle handle, Rect src, Rect dest)
 {
-    SDL_RenderCopy(m_pRenderer, m_Surfaces[handle],&src,&dest);
+    SDL_RenderCopy(m_pRenderer, m_Textures[handle],&src,&dest);
 }
+
+void Renderer::RenderRect(Rect rect, Color color, PrimitiveRenderMode mode)
+{
+    SDL_SetRenderDrawColor(m_pRenderer, color.r, color.g, color.b, color.a);
+    switch(mode)
+    {
+        case PrimitiveRenderMode::eFill:
+            SDL_RenderFillRect(m_pRenderer, &rect);
+            break;
+        case PrimitiveRenderMode::eLine:
+            SDL_RenderDrawRect(m_pRenderer, &rect);
+            break;
+    }
+}
+
