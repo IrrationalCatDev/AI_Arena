@@ -24,23 +24,31 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 bool MainObject::OnInitialize()
 {
     auto renderer = GetRenderer();
-    tempAsset = renderer->LoadAsset("Assets/roguelikeChar_transparent.png");
+    //not sure I'm a big fan of this system right now.
+    //there's not a good way of the sprite to tell the renderer to unload the asset
+    tempAsset.InitSprite(renderer->LoadAsset("Assets/roguelikeChar_transparent.png"));
+    tempAsset.SetIndexer(16,16,1,1);
+    tempAsset.SetSpriteIndex(1,3);
+    tempAsset.SetSize(64);
     return true;
 }
 
 bool MainObject::OnGameUpdate(float elapsedTime)
 {
+    static int pos;
+    tempAsset.SetPosition(pos,10);
+    pos += 1;
+    if (pos > 100)
+    {
+        pos -= 100;
+    }
     return true;
 }
 
 void MainObject::OnGameRender(Renderer* renderer)
 {
-    Indexer index(16,16,1,1);
-
-    renderer->RenderCopy(tempAsset,index.GetRectAtIndex(1,3),{16,16,64,64});
-    renderer->RenderCopy(tempAsset,index.GetRectAtIndex(7,3),{16,16,64,64});
-
-    renderer->RenderRect({64,16,60,80},{0xFF,0,0,0xFF});
+    renderer->RenderRect({64,16,60,80},Colors::Red);
+    renderer->RenderSprite(tempAsset);
 }
 
 void MainObject::OnGameInput(const SDL_Event& event)

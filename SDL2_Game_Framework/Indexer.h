@@ -5,9 +5,9 @@
 class Indexer
 {
 public:
-    Indexer(int width, int height, int xOffset, int yOffset);
-    ~Indexer()=default;
-
+    Indexer() = default;
+    ~Indexer() = default;
+    void SetData(int w, int h, int xOff, int yOff);
     Rect GetRectAtIndex(int xCoord, int yCoord);
 
 private:

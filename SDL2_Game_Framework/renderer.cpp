@@ -62,7 +62,7 @@ bool Renderer::Initialize()
     return true;
 }
 
-AssetHandle Renderer::LoadAsset(std::string fileName)
+AssetHandle Renderer::LoadAsset(const std::string& fileName)
 {
     //first check to see if the asset has already been loaded
     auto iTextureIter = m_LoadedTextures.find(fileName);
@@ -123,12 +123,12 @@ void Renderer::PopViewport()
     }
 }
 
-void Renderer::RenderCopy(AssetHandle handle, Rect src, Rect dest)
+void Renderer::RenderCopy(AssetHandle handle, const Rect& src, const Rect& dest)
 {
     SDL_RenderCopy(m_pRenderer, m_Textures[handle],&src,&dest);
 }
 
-void Renderer::RenderRect(Rect rect, Color color, PrimitiveRenderMode mode)
+void Renderer::RenderRect(const Rect& rect, const Color& color, PrimitiveRenderMode mode)
 {
     SDL_SetRenderDrawColor(m_pRenderer, color.r, color.g, color.b, color.a);
     switch(mode)
@@ -142,3 +142,7 @@ void Renderer::RenderRect(Rect rect, Color color, PrimitiveRenderMode mode)
     }
 }
 
+void Renderer::RenderSprite(const Sprite& sprite)
+{
+    RenderCopy(sprite.GetAssetHandle(), sprite.GetSpriteRect(), sprite.GetDestRect());
+}

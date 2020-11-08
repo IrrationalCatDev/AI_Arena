@@ -1,13 +1,12 @@
 #include "Indexer.h"
 
 
-Indexer::Indexer(int width, int height, int xOffset, int yOffset)
-    : m_RectWidth(width)
-    , m_RectHeight(height)
-    , m_xOffset(xOffset)
-    , m_yOffset(yOffset)
+void Indexer::SetData(int w, int h, int xOff, int yOff)
 {
-
+    m_RectWidth = w;
+    m_RectHeight = h;
+    m_xOffset = xOff;
+    m_yOffset = yOff;
 }
 
 Rect Indexer::GetRectAtIndex(int xCoord, int yCoord)

@@ -6,6 +6,7 @@
 #include <unordered_map>
 
 #include "FrameworkTypes.h"
+#include "Sprite.h"
 
 class Renderer
 {
@@ -20,15 +21,16 @@ public:
     void BeginDraw();
     void Present();
 
-    AssetHandle LoadAsset(std::string fileName);
+    AssetHandle LoadAsset(const std::string& fileName);
     void UnloadAsset(AssetHandle handle);
 
     void PushViewport(Rect viewport);
     void PopViewport();
 
-    void RenderCopy(AssetHandle handle, Rect src, Rect dest);
-    void RenderRect(Rect rect, Color color, PrimitiveRenderMode mode = PrimitiveRenderMode::eFill);
-
+    void RenderCopy(AssetHandle handle, const Rect& src, const Rect& dest);
+    void RenderRect(const Rect& rect,const Color& color, PrimitiveRenderMode mode = PrimitiveRenderMode::eFill);
+    void RenderSprite(const Sprite& sprite);
+    
 private:
     SDL_Window* m_pWindow = NULL;
     SDL_Renderer* m_pRenderer = NULL;
